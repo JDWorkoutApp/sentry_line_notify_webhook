@@ -12,7 +12,10 @@ import (
 )
 
 type sentryData struct {
-	Url string `json:"url" form:"url" binding:"required"`
+	Url   string `json:"url" form:"url" binding:"required"`
+	Event struct {
+		Title string `json:"title" form:"title" binding:"required"`
+	} `json:"event" form:"event" binding:"required"`
 }
 
 func registerSentry(r *gin.RouterGroup) {
@@ -26,7 +29,7 @@ func receiveSentry(c *gin.Context) {
 		return
 	}
 
-	lineNotify("api got error, go check, url: " + sentryData.Url)
+	lineNotify("api got error, " + sentryData.Event.Title + ", go check, url: " + sentryData.Url)
 }
 
 func lineNotify(message string) {
